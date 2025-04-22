@@ -39,7 +39,6 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
         $xpath = new DOMXPath($doc);
         $xpath->registerNamespace('o', 'https://www.weareavp.com/nunncenter/ohms');
 
-
         $namespaced = true;
         $recordQuery = $xpath->query('//o:ROOT/o:record');
         if (!$recordQuery->count()) {
@@ -83,13 +82,39 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
                 'xpath' => 'subject',
                 'multiple' => true,
             ),
+            array(
+                'element_set' => 'Item Type Metadata',
+                'element' => 'Interviewer',
+                'xpath' => 'interviewer',
+                'multiple' => true,
+            ),
+            array(
+                'element_set' => 'Item Type Metadata',
+                'element' => 'Interviewee',
+                'xpath' => 'interviewee',
+                'multiple' => true,
+            ),
+            array(
+                'element_set' => 'Item Type Metadata',
+                'element' => 'Duration',
+                'xpath' => 'duration',
+                'multiple' => true,
+            ),
         );
+
+        $item = $file->getItem();
+        $allElements = $item->getAllElements();
         $textsToAdd = array();
         foreach ($xpaths as $xpathSpec) {
             $xpathQuery = $xpathSpec['xpath'];
             $elementSet = $xpathSpec['element_set'];
             $element = $xpathSpec['element'];
             $multiple = $xpathSpec['multiple'];
+
+            // Skip missing elements
+            if (!isset($allElements[$elementSet][$element])) {
+                continue;
+            }
 
             if ($namespaced) {
                 $xpathQuery = "o:$xpathQuery";
@@ -111,8 +136,25 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
                 $textsToAdd[$elementSet][$element][] = array('text' => $result, 'html' => false);
             }
         }
+
+        $item = $file->getItem();
+        $changedItem = false;
         if ($textsToAdd) {
-            $file->addElementTextsByArray($textsToAdd);
+            $item->addElementTextsByArray($textsToAdd);
+            $changedItem = true;
+        }
+
+        if ($item->item_type_id === null) {
+            $itemType = get_db()->getTable('ItemType')->findByName('Oral History');
+
+            if ($itemType) {
+                $item->item_type_id = $itemType->id;
+                $changedItem = true;
+            }
+        }
+
+        if ($changedItem) {
+            $item->save();
         }
     }
 
