@@ -105,7 +105,7 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
                 'element_set' => 'Dublin Core',
                 'element' => 'Date',
                 'xpath' => 'date/@value',
-                'multiple' => true,
+                'multiple' => false,
             ),
             array(
                 'element_set' => 'Dublin Core',
@@ -129,7 +129,7 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
                 'element_set' => 'Item Type Metadata',
                 'element' => 'Duration',
                 'xpath' => 'duration',
-                'multiple' => true,
+                'multiple' => false,
             ),
         );
 
