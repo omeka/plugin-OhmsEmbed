@@ -261,7 +261,7 @@ function extractFootnotes(transcript) {
         const noteMatches = footnotes.matchAll(noteRegex);
 
         const footnoteContainer = createElement('div', {className: 'footnote-container'});
-        footnoteContainer.appendChild(createElement('h2', {textContent: 'Footnotes'}));
+        footnoteContainer.appendChild(createElement('h4', {textContent: 'Footnotes'}));
 
         let footnoteIndex = 1;
         for (const noteMatch of noteMatches) {
@@ -388,7 +388,7 @@ function extractVttFootnotes(vttTranscript) {
     } else {
         const annotations = matches[1];
         const footnoteContainer = createElement('div', {className: 'footnote-container'});
-        footnoteContainer.appendChild(createElement('h2', {textContent: 'Footnotes'}));
+        footnoteContainer.appendChild(createElement('h4', {textContent: 'Footnotes'}));
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(annotations, 'text/html');
@@ -747,7 +747,7 @@ function displayMetadata(data) {
     const title = data.title || 'Untitled';
     document.title = title;
 
-    frag.appendChild(createElement('h1', {textContent: title}));
+    frag.appendChild(createElement('h3', {textContent: title}));
 
     frag.appendChild(createElement('span', {
         className: 'repository',
@@ -894,7 +894,7 @@ function setUpControls(data) {
         id: 'toggle-index',
         className: 'fa',
         type: 'button',
-        textContent: 'Toggle index',
+        textContent: 'Show index',
         ariaPressed: 'false',
     });
     indexMobileButton.addEventListener('click', () => {
@@ -939,14 +939,14 @@ function setUpControls(data) {
             id: 'fullscreen',
             className: 'fa enter-fullscreen',
             type: 'button',
-            title: 'Fullscreen'
+            title: 'Enter Fullscreen'
         });
         document.body.addEventListener('fullscreenchange', (e) => {
             if (document.fullscreenElement) {
                 fullscreenButton.title = 'Exit Fullscreen';
                 fullscreenButton.className = 'fa exit-fullscreen';
             } else {
-                fullscreenButton.title = 'Fullscreen';
+                fullscreenButton.title = 'Enter Fullscreen';
                 fullscreenButton.className = 'fa enter-fullscreen';
             }
         });
