@@ -200,6 +200,7 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
             $height = 800;
         }
         $attrs['style'] = "width: 100%; height: {$height}px";
+        $attrs['title'] = $file->getItem()->getDisplayTitle('Oral History Transcript');
         $attrString = tag_attributes($attrs);
 
         return "<iframe {$attrString}></iframe>";
