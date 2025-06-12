@@ -3,6 +3,7 @@
 class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
 {
     protected $_hooks = array('initialize', 'install', 'uninstall', 'config_form', 'config', 'before_save_file');
+    protected $_filters = array('light_gallery_callbacks');
     protected $_options = array(
         'ohms_embed_extract_metadata' => true,
         'ohms_embed_height' => 800,
@@ -187,6 +188,23 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
         if ($changedItem) {
             $item->save();
         }
+    }
+
+    public function filterLightGalleryCallbacks($callbacks)
+    {
+        $callbacks['text/xml'] = 'OhmsEmbedPlugin::lightGallery';
+        $callbacks['application/xml'] = 'OhmsEmbedPlugin::lightGallery';
+        return $callbacks;
+    }
+
+    public static function lightGallery($file)
+    {
+        $viewer = web_path_to('javascripts/vendor/ohmsjs/ohms.html');
+        $query['cachefile'] = $file->getWebPath('original');
+        return array(
+            'data-iframe' => 'true',
+            'data-src' => $viewer . '?' . http_build_query($query),
+        );
     }
 
     public static function embed($file, $options)
