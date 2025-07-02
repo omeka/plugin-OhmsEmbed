@@ -1,4 +1,4 @@
-#OHMS Embed
+# OHMS Embed
 
 An Omeka Classic module that allows site administrators to add [Oral History Metadata Synchronizer](https://www.oralhistoryonline.org/) objects as media to Omeka S items.
 
