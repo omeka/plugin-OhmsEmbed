@@ -203,6 +203,7 @@ class OhmsEmbedPlugin extends Omeka_Plugin_AbstractPlugin
         $query['cachefile'] = $file->getWebPath('original');
         return array(
             'data-iframe' => 'true',
+            'data-iframe-title' => $file->getItem()->getDisplayTitle('Oral History Transcript'),
             'data-src' => $viewer . '?' . http_build_query($query),
         );
     }
